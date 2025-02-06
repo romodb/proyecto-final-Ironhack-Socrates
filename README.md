@@ -1,2 +1,2 @@
-# gestor-museos-proyecto-final-
+# Gestor de museos:
 Proyecto final de Ironhack
