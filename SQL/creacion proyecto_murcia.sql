@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`usuarios_murcia` (
   `id_inventario` VARCHAR(50) NULL,
   `municipio` VARCHAR(100) NULL,
   `pedania` VARCHAR(100) NULL,
-  `dirección` VARCHAR(250) NULL,
+  `dirección` VARCHAR(250) NULL,obras_murcia
   `C.P.` VARCHAR(6) NULL,
   PRIMARY KEY (`id_usuario`))
 ENGINE = InnoDB;
