@@ -29,9 +29,10 @@ dicc_autores = {}
 with engine.connect() as conexion:
     result = conexion.execute(autores_murcia.select())
     for row in result:
-        
+        print(f"Tipo de row: {type(row)}")  
+        print(f"Contenido de row: {row}")  
         try:
-            dicc_autores[row['nombre_autor']] = row['id_autor']
+            dicc_autores[row[1]] = row[0] # 0 para el nombre del autor y 1 para el id
         except KeyError as e:
             print(f"Error al acceder a la columna: {e}, fila: {row}")
 
@@ -40,7 +41,7 @@ with engine.connect() as conexion:
     resultado_1 = conexion.execute(obras_arte_murcia.select())
 
     for row in resultado_1:
-        nom_autor = row['nombre_autor']
+        nom_autor = row[1]
         if nom_autor in dicc_autores: 
             id_autor = dicc_autores[nom_autor]
             conexion.execute(
