@@ -76,7 +76,7 @@ sesion_2 = sessionmaker(bind=engine)
 sesion_3 = sesion_2()
 
 # Cargamos el csv de los usuarios:
-usuario_csv = pd.read_csv('C:/Users/Ro/OneDrive/Escritorio/No se como llamarlo/Ironhack/Proyecto final_error_definitivo/obras_arte_murcia.csv')
+usuario_csv = pd.read_csv('C:/Users/Ro/OneDrive/Escritorio/No se como llamarlo/Ironhack/Proyecto final_error_definitivo/SQL/obras_autor.csv')
 # Creamos una columna para añadir los id´s:
 usuario_csv.insert(column='id_usuario', value=None, loc=1)
 
@@ -103,3 +103,5 @@ usuario_csv.to_csv('C:/Users/Ro/OneDrive/Escritorio/No se como llamarlo/Ironhack
 
 # Cerramos sesión:
 sesion_1.close()
+
+
