@@ -78,21 +78,21 @@ sesion_3 = sesion_2()
 # Cargamos el csv de los usuarios:
 usuario_csv = pd.read_csv('C:/Users/Ro/OneDrive/Escritorio/No se como llamarlo/Ironhack/Proyecto final_error_definitivo/obras_arte_murcia.csv')
 # Creamos una columna para añadir los id´s:
-usuario_csv.insert(column='id_usuario', value=None, loc=0)
+usuario_csv.insert(column='id_usuario', value=None, loc=1)
 
 failed = []
 
 # Creamos el bucle para los usuarios:
 for index, row in usuario_csv.iterrows():
-    usuario_nombre = row['nombre_usuario']
+    usuario_nombre = row['usuario']
     # Buscamos el nombre_autor del autor en la db:
     # autor = sesion_1.query(Autor).filter(Autor.nombre_autor == autor_nombre).first()
-    autor = sesion_1.query(User).filter(User.nombre_usuario.like(f'%{usuario_nombre}%')).first()
+    usuario = sesion_1.query(User).filter(User.nombre_usuario.like(f'%{usuario_nombre}%')).first()
     
 
-    if autor:
+    if usuario:
         # Si existe tiene id_autor:
-        usuario_csv.at[index, 'id_usuario'] = User.id_usuario
+        usuario_csv.at[index, 'id_usuario'] = usuario.id_usuario
     else:
         failed.append(usuario_nombre)
 
