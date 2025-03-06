@@ -105,3 +105,8 @@ usuario_csv.to_csv('C:/Users/Ro/OneDrive/Escritorio/No se como llamarlo/Ironhack
 sesion_1.close()
 
 
+# Hay un ligero y sutil problemita extra. Tenemos dos columnas extra (nombre_autor y usuario), vamos a seleccionar las columnas con las que nos quedamos y descargamos la actualización. 
+
+obras_limpias_sql = pd.read_csv('C:/Users/Ro/OneDrive/Escritorio/No se como llamarlo/Ironhack/Proyecto final_error_definitivo/SQL/obras_autor.csv')
+obras_limpias_sql = obras_limpias_sql[['id_autor', 'id_usuario', 'titulo', 'fondo (cm)', 'ancho (cm)', 'alto (cm)', 'tecnica', 'tipo', 'material_base', 'material_secundario', 'tematica']]
+obras_limpias_sql.to_csv('C:/Users/Ro/OneDrive/Escritorio/No se como llamarlo/Ironhack/Proyecto final_error_definitivo/SQL/obras_autor.csv', index=False)
