@@ -19,11 +19,10 @@ string_conexion = f'mysql+pymysql://practica_conectar_python:Admin123@localhost/
 # contrasena = 'Admin123'
 engine = create_engine(string_conexion, echo=True)
 
-# Definimos el modelo para los autores:
+# Definimos el modelo para las obras:
 obras = declarative_base()
 
-
-class Autor(obras):
+class Obras(obras):
     __tablename__ = 'obras_murcia'
     id_inventario = Column(Integer, primary_key=True)
     titulo = Column(String)
@@ -37,7 +36,26 @@ class Autor(obras):
     tematica = Column(String)
     id_usuario = Column(Integer, ForeignKey('usuarios_murcia.id_usuario'))
 
+# Definimos tambien los autores:
+autores = declarative_base()
 
+class Autor(autores):
+    __tablename__ = 'autores_murcia'
+    id_autor = Column(Integer, primary_key=True)
+    nombre_autor = Column(String)
+    # id_inventario = Column(String)
+
+usuario = declarative_base()
+
+class Usuario(usuario):
+    __tablename__ = 'usuarios_murcia'
+    id_usuario = Column(Integer, primary_key=True)
+    nombre_usuario = Column(String)
+    id_inventario = Column(String)
+    municipio = Column(String)
+    pedania = Column(String)
+    direccion = Column(String)
+    cp = Column(String)
 
 # Iniciamos el proceso:
 socrates = FastAPI()
@@ -54,9 +72,9 @@ async def root():
 
 
 # R de Read, para obtener valores de una categoría:
-# @socrates.get('/datos/autores')
-# async def datos_autores():
-#     return autores
+@socrates.get('/datos/autores')
+async def datos_autores():
+    return autores
 
 
 
@@ -82,3 +100,20 @@ async def root():
 
 if __name__ == '__main__':
     uvicorn.run(app='Socrates:socrates', host=HOST, port=PORT, reload=DEV)
+
+
+
+
+
+pp/
+ | - main.py
+ | - dao/
+      | -> dao.py
+ | - models/
+      | -> models.py
+ | - settings/
+      | -> setting.py
+ | - routers/
+      | -> router1.py
+      | -> router2.py
+      | -> routerN.py
