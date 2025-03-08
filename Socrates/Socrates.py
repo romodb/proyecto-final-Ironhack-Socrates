@@ -4,20 +4,43 @@ from fastapi import FastAPI, HTTPException, Response, status
 from fastapi.responses import RedirectResponse
 import uvicorn
 import pandas as pd
+from sqlalchemy import create_engine, Table, Boolean, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 # Creamos el host y el puerto:
 HOST = '0.0.0.0'
-PORT = 610
-DEV = False # Temporalmente se va a poner en False para evitar problemas de actualizaciones durante el desarrollo.
+PORT = 6100
+DEV = True # Temporalmente se va a poner en False para evitar problemas de actualizaciones durante el desarrollo.
 
-# Cargamos la base de datos:
-autores = pd.read_csv('C:/Users/Ro/OneDrive/Escritorio/No se como llamarlo/Ironhack/Proyecto final_error_definitivo/id_autores_murcia.csv') 
-usuarios = pd.read_csv('C:/Users/Ro/OneDrive/Escritorio/No se como llamarlo/Ironhack/Proyecto final_error_definitivo/id_entidades_murcia.csv')
-obras_arte = pd.read_csv('C:/Users/Ro/OneDrive/Escritorio/No se como llamarlo/Ironhack/Proyecto final_error_definitivo/SQL/obras_autor.csv')
+# Cargamos la base de datos conectandola con:
+data = 'proyecto_murcia_definitivo'
+string_conexion = f'mysql+pymysql://practica_conectar_python:Admin123@localhost/{data}'
+# contrasena = 'Admin123'
+engine = create_engine(string_conexion, echo=True)
+
+# Definimos el modelo para los autores:
+obras = declarative_base()
+
+
+class Autor(obras):
+    __tablename__ = 'obras_murcia'
+    id_inventario = Column(Integer, primary_key=True)
+    titulo = Column(String)
+    id_autor = Column(Integer, ForeignKey('autores_murcia.id_autor'))
+    fondo_cm = Column(Integer)
+    ancho_cm = Column(Integer)
+    alto_cm = Column(Integer)
+    tecnica = Column(String)
+    material_base = Column(String)
+    material_secundario = Column(String)
+    tematica = Column(String)
+    id_usuario = Column(Integer, ForeignKey('usuarios_murcia.id_usuario'))
+
+
 
 # Iniciamos el proceso:
 socrates = FastAPI()
-# uvicorn.run(app='main:app', host=HOST, port=PORT, reload=DEV)
 
 @socrates.get("/")
 async def root():
@@ -31,11 +54,31 @@ async def root():
 
 
 # R de Read, para obtener valores de una categoría:
+# @socrates.get('/datos/autores')
+# async def datos_autores():
+#     return autores
 
 
+
+# @socrates.get('/datos/usuarios')
+# async def datos_usuarios():
+#     return usuarios
+
+# @socrates.get('/datos/obras')
+# async def datos_obras():
+#     return obras_arte
+
+# Para obtener el nombre de un usuario/entidad concreto:
+# @socrates.get('datos/{pk}') 
 
 # U de Update, para dar de alta un csv nuevo y así agregar valores en una tabla:
 
 
 # D de Delete, para eliminar valores:
 
+
+
+
+
+if __name__ == '__main__':
+    uvicorn.run(app='Socrates:socrates', host=HOST, port=PORT, reload=DEV)
