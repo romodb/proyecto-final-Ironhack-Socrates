@@ -8,11 +8,6 @@ from sqlalchemy import create_engine, Table, Boolean, Column, Integer, String, F
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-# Creamos el host y el puerto:
-HOST = '0.0.0.0'
-PORT = 6100
-DEV = True # Temporalmente se va a poner en False para evitar problemas de actualizaciones durante el desarrollo.
-
 # Cargamos la base de datos conectandola con:
 data = 'proyecto_murcia_definitivo'
 string_conexion = f'mysql+pymysql://practica_conectar_python:Admin123@localhost/{data}'
@@ -104,16 +99,3 @@ if __name__ == '__main__':
 
 
 
-
-pp/
- | - main.py
- | - dao/
-      | -> dao.py
- | - models/
-      | -> models.py
- | - settings/
-      | -> setting.py
- | - routers/
-      | -> router1.py
-      | -> router2.py
-      | -> routerN.py
