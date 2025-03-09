@@ -1,4 +1,6 @@
-# Definimos tambien los autores:
+# from app.ajustes.settings import DB_CONNECTION, DB_USER,DB_HOST,DB_NAME, DB_PASSWORD, DB_PORT
+
+# Definimos la tabla de los autores:
 autores = declarative_base()
 
 class Autor(autores):
