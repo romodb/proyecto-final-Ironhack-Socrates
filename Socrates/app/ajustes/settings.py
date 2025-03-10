@@ -16,6 +16,9 @@ DB_PASSWORD = 'Admin123'
 DB_HOST = 'localhost'
 DB_PORT = 3306
 
+DB_AUTORES ='proyecto_murcia_definitivo.autores_murcia'
+
+
 DB_CONNECTION = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
 
 # Echo=DEV para que al pasar de True a False la maquina se encienda o se apague 

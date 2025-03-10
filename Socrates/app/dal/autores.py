@@ -1,8 +1,10 @@
 from app.ajustes.settings import DB_CONNECTION, DB_NAME, DB_USER, DB_PORT, DB_HOST
 from fastapi import HTTPException
+from app.ajustes.settings import DB_NAME, DB_AUTORES
+
 # Aquí debemos poner las queries que se van a realizar en la capa de los routers:
 # Para haxcer un get:
-def obtener_autores_id():
+def obtener_autores_id(id: int):
     connection = None
     try:
         connection = DB_CONNECTION

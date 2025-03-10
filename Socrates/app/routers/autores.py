@@ -1,8 +1,9 @@
 # Decorador (@), def (cabecera funcion con un pass), defines la variabe, 
 # seleccionas el texto y haces docstring (""" """)
 
-from fastapi import APIRouter, JSONResponse
-from app.dal.autores import actualizar_autores, crear_autor, obtener_autores_id, eliminar_autores, obtener_autores_nom
+from fastapi import APIRouter, HTTPException, Response, status
+from app.dal.autores import actualizar_autores, crear_autor, obtener_autores_id, eliminar_autores, obtener_autores_nombre
+from app.ajustes.settings import DB_NAME, DB_AUTORES
 # from app.dal.autores import 
 router = APIRouter(prefix='/autores')
 
@@ -17,16 +18,34 @@ async def new_data(id: int):
     Returns:
          el nombre del autor
     """
-    autores = obtener_autores_nom()  # Llamada a la función DAO
+    autores = obtener_autores_id(id)  # Llamada a la función DAO
     if autores:
-        return JSONResponse(content=autores, status_code=200)  # Respuesta con lista de autores
+        return Response(content=autores, status_code=status.HTTP_200_OK)  # Respuesta con lista de autores
     else:
-        return JSONResponse(content={"mensaje": "No se encontraron autores"}, status_code=404)  # Si no hay autores
+        raise HTTPException(detail={"mensaje": "No se encontraron autores"}, status_code=status.HTTP_404_NOT_FOUND)  # Si no hay autores
+
+# Version hecha por nassh y que deberias imitar ;~;
+@router.get('/{id}')
+async def getById(id: int):
+    """_summary_
+
+    Args:
+        id (int): _description_
+
+    Raises:
+        HTTPException: _description_
+
+    Returns:
+        _type_: _description_
+    """
+    autor = obtener_autores_id(id)
+    if autor == None: 
+        raise HTTPException(detail={"mensaje": "No se encontraron autores"}, status_code=404)  # Si no hay autores
+    return Response(content=autor, status_code=status.HTTP_200_OK)
 
 
-
-@router.get('/nombre_autor/{nombre}')
-async def new_data(nombre: str):
+@router.get('/nombre_autor/{nombre_autor}')
+async def new_data(nombre_autor: str):
     """Usando el nombre de un autor va a buscarlo en la db y va a devolver su id.
 
     Args:
@@ -34,11 +53,11 @@ async def new_data(nombre: str):
     Returns:
          el id del autor
     """
-    autores = obtener_autores_id()  # Llamada a la función DAO
+    autores = obtener_autores_nombre(nombre_autor)  # Llamada a la función DAO
     if autores:
-        return JSONResponse(content=autores, status_code=200)  # Respuesta con lista de autores
+        return Response(content=autores, status_code=status.HTTP_200_OK)  # Respuesta con lista de autores
     else:
-        return JSONResponse(content={"mensaje": "No se encontraron autores"}, status_code=404)  # Si no hay autores
+        raise HTTPException(detail={"mensaje": "No se encontraron autores"}, status_code=status.HTTP_404_NOT_FOUND)  # Si no hay autores
  
 #  1º debes generar la estructura de la funcion, 2º añades un comentario de que hace,
 #  3º completas la funcion y 4º aplicas el dicstring(""" """)
@@ -55,7 +74,7 @@ async def new_data(nombre: str):
 
 
 # Put
-@router.put('/change_data/{nombre}')
+@router.put('/change_data/{nombre_autor}')
 async def change_data(nombre: str):
     """Este endpoint modifica los datos de un autor.
 
@@ -65,24 +84,11 @@ async def change_data(nombre: str):
     Returns:
         lista: los campos del autor creado, con el id de sql
     """
-    # Buscar el usuario por su ID
-    db_usuario = db.query(Usuario).filter(Usuario.id == usuario_id).first()
-    # Si el usuario no existe, devolver None
-    if db_usuario is None:
-        return None
-    # Actualizar los campos
-    db_usuario.nombre = nombre
-    db_usuario.email = email
-    # Guardar los cambios en la base de datos
-    db.commit()
-    db.refresh(db_usuario)  # Refrescar los datos del usuario
-    return db_usuario
-
 
 
 # Post, DEBES REVISARLO.
 @router.post('/create_data/{nuevo_nombre}')
-async def change_data(nombre: str):
+async def change_data(nombre_autor: str):
     """Este endpoint añade datos a la db de los datos de un autor.
 
     Args:
@@ -92,49 +98,30 @@ async def change_data(nombre: str):
         lista: el id del nuevo autor.
     """
         # Verificar si el id ya existe
-    db_usuario = db.query(Usuario).filter(Usuario.id_autor == usuario.id_autor).first()
+    db_usuario = DB_NAME.query(DB_AUTORES).filter(DB_AUTORES.nombre_autor == nombre_autor).first()
     if db_usuario:
-        raise HTTPException(status_code=400, detail="El correo electrónico ya está en uso")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El valor que has puesto no es válido, revisa que es un nombre.")
     # Llamar a la función para crear el usuario
-    nuevo_usuario = crear_usuario(db=db, nombre=usuario.nombre, email=usuario.email)
+    nuevo_usuario = crear_autor(db=DB_AUTORES, nombre=nombre_autor.nombre)
     return nuevo_usuario
     
     
 
 
-@router.delete('/delete/{id}')
-async def detel_data(id: int):
-    """Este endpoint elimina los datos de un autor buscandolo por su id.
+@router.delete('/delete/{id_autor}')
+async def detel_data(id_autor: int, nombre_autor: str):
+    """Este endpoint eliminara todos los datos de un autor buscandolo por su id.
 
     Args:
-        datos_ls (list[str]): el id de un autor.
+        (id_autor: int, nombre_autor: str): el id de un autor.
 
     Returns:
         lista: de los valores borrados, emitira un codigo de error si no localiza el id.
     """
     # Llamar a la función para eliminar el usuario
-    usuario_eliminado_id = eliminar_usuario(db=db, usuario_id=usuario_id)
+    autor_eliminado_id = eliminar_autores(db=DB_AUTORES, id_autor=id_autor, nombre_autor=nombre_autor)
     # Si no se encuentra el usuario, lanzar una excepción 404
-    if usuario_eliminado is None:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    return usuario_eliminado
+    if eliminar_autores is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario no encontrado")
+    return eliminar_autores
 
-
-
-
-@router.delete('/delete/{nombre}')
-async def detel_data(nombre: str):
-    """Este endpoint elimina los datos de un autor pero buscandolo por su nombre.
-
-    Args:
-        datos_ls (list[str]): el nombre de un autor.
-
-    Returns:
-        lista: de los valores borrados, emitira un codigo de error si no localiza el nombre.
-    """
-    # Llamar a la función para eliminar el usuario
-    usuario_eliminado_nombre = eliminar_usuario(db=db, usuario_id=usuario_id)
-    # Si no se encuentra el usuario, lanzar una excepción 404
-    if usuario_eliminado is None:
-        raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    return usuario_eliminado

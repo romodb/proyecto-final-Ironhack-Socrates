@@ -86,3 +86,52 @@ async def eliminar_usuario_endpoint(usuario_id: int, db: Session = Depends(get_d
     if usuario_eliminado is None:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     return usuario_eliminado
+
+# ---------------------------------------------------------
+
+@router.get('/id_autor/{id}')
+async def new_data(id: int):
+    """Usando el id de un autor va a buscarlo en la db y va a devolver su nombre completo.
+
+    Args:
+        datos_ls (list[int]): un id que identifique a un autor
+    Returns:
+         el nombre del autor
+    """
+    autores = obtener_autores_id(id)  # Llamada a la función DAO
+    if autores:
+        return Response(content=autores, status_code=status.HTTP_200_OK)  # Respuesta con lista de autores
+    else:
+        raise HTTPException(detail={"mensaje": "No se encontraron autores"}, status_code=404)  # Si no hay autores
+
+# Version hecha por nassh y que deberias imitar ;~;
+@router.get('/{id}')
+async def getById(id: int):
+    """_summary_
+
+    Args:
+        id (int): _description_
+
+    Raises:
+        HTTPException: _description_
+
+    Returns:
+        _type_: _description_
+    """
+    autor = obtener_autores_id(id)
+    if autor == None: 
+        raise HTTPException(detail={"mensaje": "No se encontraron autores"}, status_code=404)  # Si no hay autores
+    return Response(content=autor, status_code=status.HTTP_200_OK)
+
+
+# -------------------------------------------------
+# Verificar si el autor ya existe por correo electrónico (suponiendo que tienes una columna de correo en la tabla)
+if db_autor:
+    raise HTTPException(status_code=400, detail="El autor ya existe con ese correo electrónico")
+
+# Llamar a la función para crear el nuevo autor
+nuevo_autor = crear_autor(db=db, nombre=autor.nombre, email=autor.email)  # Si tienes columna de correo
+return nuevo_autor
+
+
+
