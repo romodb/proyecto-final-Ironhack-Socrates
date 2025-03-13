@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 # from app.dal.usuarios import 
-router = APIRouter(prefix='/usuarios')
+obras_arte_router = APIRouter(prefix='/usuarios')
 
 # Con usuarios los endpoint´s a desarollar son los siguientes:
 
-@router.get('/id_usuarios/{id}')
+@obras_arte_router.get('/id_usuarios/{id}')
 async def new_data(id: int):
     """Read: 
     Recoge los valores que cumplan un requisito
@@ -12,13 +12,14 @@ async def new_data(id: int):
 
     pass
 
-@router.get('/nombre_usuarios/{nombre}')
+
+@obras_arte_router.get('/nombre_usuarios/{nombre}')
 async def new_data(nombre: str):
     """Read: 
     Recoge los valores que cumplan un requisito
     Te devuelve los valores que cumplan un requisito"""
-
     pass
+
 
 #  1º debes generar la estructura de la funcion, 2º añades un comentario de que hace,
 #  3º completas la funcion y 4º aplicas el dicstring(""" """)
@@ -34,7 +35,7 @@ async def new_data2(datos_ls: list[str]):
     return datos_ls
 
 
-@router.put('/change_data')
+@obras_arte_router.put('/change_data')
 async def change_data():
     """Replace: mofica datos de usuarioses:
     Recoge un nombre de un usuarios o su id para identificarlo y modificarlo
@@ -43,14 +44,15 @@ async def change_data():
     pass
 
 
-@router.post('/create_data')
+@obras_arte_router.post('/create_data')
 async def change_data():
     """Create: dar de alta a usuarioses:
     Recoge un nuevo nombre.
     Devuelve el id de este nuevo usuarios"""
     pass
 
-@router.delete('/delete')
+
+@obras_arte_router.delete('/delete')
 async def detel_data():
     """Delete: borra valores con una caracteristica concreta.
     Recoge un nombre o un id

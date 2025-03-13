@@ -1,16 +1,16 @@
-from fastapi import FastAPI, HTTPException, Response, status
-from fastapi.responses import RedirectResponse
-from app.ajustes.settings import DEV, APP_HOST, APP_PORT
-from app.routers.autores import router as router_autores 
-from app.routers.usuarios import router as router_usuario 
-from app.routers.obras_arte import router as router_obras_arte 
+from fastapi import FastAPI
+from ajustes.settings import DEV, APP_HOST, APP_PORT
+from routers.autores import autor_router 
+# from routers.usuarios import usuario_router
+from routers.obras_arte import obras_arte_router 
 import uvicorn
+
 
 # Iniciamos el proceso:
 socrates = FastAPI()
-socrates.add_api_route(router_autores)
-socrates.add_api_route(router_usuario)
-socrates.add_api_route(router_obras_arte)
+socrates.include_router(autor_router)
+# socrates.include_router(usuario_router)
+socrates.include_router(obras_arte_router)
 
 
 

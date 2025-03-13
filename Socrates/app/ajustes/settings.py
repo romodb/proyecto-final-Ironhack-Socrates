@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+
 
 
 # Creamos el host y el puerto:
@@ -15,8 +15,6 @@ DB_USER = 'practica_conectar_python'
 DB_PASSWORD = 'Admin123'
 DB_HOST = 'localhost'
 DB_PORT = 3306
-
-DB_AUTORES ='proyecto_murcia_definitivo.autores_murcia'
 
 
 DB_CONNECTION = f'mysql+pymysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'

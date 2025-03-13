@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`usuarios_murcia` (
   `municipio` VARCHAR(45) NULL,
   `pedania` VARCHAR(45) NULL,
   `dirección` VARCHAR(250) NULL,
-  `C.P.` VARCHAR(45) NULL,
+  `cp` VARCHAR(45) NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE INDEX `nombre_usuario_UNIQUE` (`nombre_usuario` ASC) VISIBLE,
   UNIQUE INDEX `id_inventario_UNIQUE` (`id_inventario` ASC) VISIBLE)
